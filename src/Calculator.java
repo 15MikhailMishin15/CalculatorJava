@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Calculator {
     private static boolean isValidInput(String exp) {
         exp = exp.replaceAll("\\s", "");  // Удаляем пробелы из ввода
-        return exp.matches("^[\\d+\\-*/IVXLCDM]*$");
+        return exp.matches("^[\\d\\+\\-*/IVXLCDM]*$");
     }
 
     public static void main(String[] args) {
@@ -14,7 +14,6 @@ public class Calculator {
             System.out.println("Input:");
             String exp = scanner.nextLine();
 
-
             // Проверяем, является ли строка математической операцией
             if (!isValidInput(exp)) {
                 throw new IllegalArgumentException("Ошибка: строка не является математической операцией");
@@ -22,12 +21,11 @@ public class Calculator {
 
             // Проверяем количество операторов в выражении
             int operatorCount = 0;
-            for (int i = 0; i < actions.length; i++) {
-                if (exp.contains(actions[i])) {
-                    operatorCount++;
+            for (String action : regexActions) {
+                operatorCount += exp.split(action).length-1;
                 }
-            }
-            if (operatorCount != 1) {
+
+            if (operatorCount != 1 ) {
                 throw new IllegalArgumentException("Ошибка: формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
             }
 
