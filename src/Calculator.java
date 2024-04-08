@@ -6,6 +6,21 @@ public class Calculator {
         return exp.matches("^[\\d\\+\\-*/IVXLCDM]*$");
     }
 
+    private static int calc(int num1, int num2, char operator) {
+        switch (operator) {
+            case '+':
+                return num1 + num2;
+            case '-':
+                return num1 - num2;
+            case '*':
+                return num1 * num2;
+            case '/':
+                return num1 / num2;
+            default:
+                throw new IllegalArgumentException("Неверный оператор");
+        }
+    }
+
     public static void main(String[] args) {
         try {
             String[] actions = {"+", "-", "/", "*"};
@@ -22,10 +37,10 @@ public class Calculator {
             // Проверяем количество операторов в выражении
             int operatorCount = 0;
             for (String action : regexActions) {
-                operatorCount += exp.split(action).length-1;
-                }
+                operatorCount += exp.split(action).length - 1;
+            }
 
-            if (operatorCount != 1 ) {
+            if (operatorCount != 1) {
                 throw new IllegalArgumentException("Ошибка: формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
             }
 
@@ -67,12 +82,7 @@ public class Calculator {
             }
 
             // Выполняем операцию
-            int result = switch (actions[actionIndex]) {
-                case "+" -> num1 + num2;
-                case "-" -> num1 - num2;
-                case "*" -> num1 * num2;
-                default -> num1 / num2;
-            };
+            int result = calc(num1, num2, actions[actionIndex].charAt(0));
 
             // Проверяем результат на отрицательное значение
             if (a && result <= 0) {
