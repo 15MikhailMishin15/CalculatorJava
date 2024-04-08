@@ -1,5 +1,11 @@
 import java.util.Scanner;
 
+class PanicException extends Exception {
+    public PanicException(String message) {
+        super(message);
+    }
+}
+
 public class Calculator {
     private static boolean isValidInput(String exp) {
         exp = exp.replaceAll("\\s", "");  // Удаляем пробелы из ввода
@@ -17,8 +23,13 @@ public class Calculator {
             case '/':
                 return num1 / num2;
             default:
-                throw new IllegalArgumentException("Неверный оператор");
+                panic("Неверный оператор");
+                return 0;
         }
+    }
+
+    private static void panic(String message) {
+        throw new RuntimeException(message);
     }
 
     public static void main(String[] args) {
@@ -31,7 +42,7 @@ public class Calculator {
 
             // Проверяем, является ли строка математической операцией
             if (!isValidInput(exp)) {
-                throw new IllegalArgumentException("Ошибка: строка не является математической операцией");
+                panic("Ошибка: строка не является математической операцией");
             }
 
             // Проверяем количество операторов в выражении
@@ -41,7 +52,7 @@ public class Calculator {
             }
 
             if (operatorCount != 1) {
-                throw new IllegalArgumentException("Ошибка: формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
+                panic("Ошибка: формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
             }
 
             // Находим индекс оператора
@@ -64,7 +75,7 @@ public class Calculator {
 
             // Проверяем, используются ли одновременно разные системы счисления
             if (a != b) {
-                throw new IllegalArgumentException("Ошибка: используются одновременно разные системы счисления");
+                panic("Ошибка: используются одновременно разные системы счисления");
             }
 
             // Преобразуем операнды в числа
@@ -78,7 +89,7 @@ public class Calculator {
 
             // Проверяем диапазон чисел
             if ((num1 > 10) || (num1 < 1) || (num2 > 10) || (num2 < 1)) {
-                throw new IllegalArgumentException("Ошибка: Должны использоваться числа от 1 до 10");
+                panic("Ошибка: Должны использоваться числа от 1 до 10");
             }
 
             // Выполняем операцию
@@ -86,7 +97,7 @@ public class Calculator {
 
             // Проверяем результат на отрицательное значение
             if (a && result <= 0) {
-                throw new IllegalArgumentException("Ошибка: в римской системе нет отрицательных чисел");
+                panic("Ошибка: в римской системе нет отрицательных чисел");
             }
 
             // Выводим результат
@@ -97,7 +108,7 @@ public class Calculator {
             } else {
                 System.out.println(result);
             }
-        } catch (IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             System.out.println("Output:");
             System.out.println(e.getMessage());
         }
